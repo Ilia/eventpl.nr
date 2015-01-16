@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "4.2.*"
+		"laravel/framework": "4.2.*",
+		"watson/validating": "0.10.*"
 	},
 	"autoload": {
 		"classmap": [
