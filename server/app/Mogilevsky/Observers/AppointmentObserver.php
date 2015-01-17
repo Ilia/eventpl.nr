@@ -1,7 +1,10 @@
 <?php 
 namespace Mogilevsky\Observers;
 
-class AppointmentObserver implements \Mogilevsky\ObserverInterface{
+use \Mogilevsky\ObserverInterface;
+use \Mogilevsky\Observers\BaseObserver;
+
+class AppointmentObserver extends BaseObserver implements ObserverInterface{
 
     public function created($model){
       var_dump("created");

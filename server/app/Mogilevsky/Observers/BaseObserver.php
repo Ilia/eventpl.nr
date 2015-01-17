@@ -1,16 +1,13 @@
 <?php 
 namespace Mogilevsky\Observers;
 
-use \Mogilevsky\ObserverInterface;
-use \Mogilevsky\Observers\BaseObserver;
-use \Mogilevsky\Loggers\FileLogger;
+class BaseObserver implements \Mogilevsky\ObserverInterface{
 
-class CalendarObserver extends BaseObserver implements ObserverInterface{
+    public function saving($model){
+      return $model->validate();
+    }
 
     public function created($model){
-      
-      FileLogger::instance()->log('hello!');
-
       var_dump("created");
     }
 
