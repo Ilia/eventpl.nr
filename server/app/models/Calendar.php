@@ -1,15 +1,14 @@
 <?php
-use Watson\Validating\ValidatingTrait;
+use Mogilevsky\Storage\Model;
 
-class Calendar extends Eloquent {
+class Calendar extends Model {
 
-  use ValidatingTrait;
-
-  protected $rules = [
+  
+  protected static $_rules = [
     'name'   => 'required|unique:calendars,name',
   ];
 
-  protected $validationMessages = [
+  protected static $_messages = [
     'name.unique' => "Another calendar is using that name already."
   ];
 

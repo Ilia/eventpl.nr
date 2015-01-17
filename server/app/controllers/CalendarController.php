@@ -4,18 +4,6 @@ class CalendarController extends \BaseController {
 
 	public $restful = true;
 
-  protected $_calendar;
-
-  /**
-	 * Construct method
-	 *
-	 */
-
-  public function __construct(Calendar $calendar)
-  {
-  	$this->_calendar = $calendar;
-  }
-
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -50,8 +38,10 @@ class CalendarController extends \BaseController {
 	 */
 	public function store()
 	{
-		$calendar = $this->_calendar->fill(Input::all());	
-		if (!$calendar->save()) {
+		$calendar = new Calendar(Input::all());
+
+    if (!$calendar->save())
+    {
 			return Response::json($calendar->getErrors()->toArray(), 400);
  		}
 
@@ -92,13 +82,8 @@ class CalendarController extends \BaseController {
 		}
 		$calendar->name = Input::get('name');
 
-		// TODO: find better way
-		if( !$this->_calendar->fill($calendar->toArray())->isValid()) {
-			return Response::json($this->_calendar->getErrors()->toArray(), 400);
-		}
-
 		if (!$calendar->save()){
-			return Response::json("Resource could not be saved", 400);
+			return Response::json($calendar->getErrors()->toArray(), 400);
 		}
 
 		return Response::json("Resource Updated", 200);
