@@ -29,6 +29,7 @@ class CalendarController extends \BaseController {
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id)
@@ -51,7 +52,7 @@ class CalendarController extends \BaseController {
 	{
 		$calendar = $this->_calendar->fill(Input::all());	
 		if (!$calendar->save()) {
-			return Response::json($this->_calendar->getErrors()->toArray(), 400);
+			return Response::json($calendar->getErrors()->toArray(), 400);
  		}
 
  		return Response::json("Resource Created", 201);
@@ -83,8 +84,21 @@ class CalendarController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$calendar = Calendar::find($id);
+		if(is_null($calendar)) {
+		   return Response::json("Not Found", 404);
+		}
+		$calendar->name = Input::get('name');
+
+		// TODO: find better way
+		if( !$this->_calendar->fill($calendar->toArray())->isValid()) {
+			return Response::json($this->_calendar->getErrors()->toArray(), 400);
+		}
+
+		if (!$calendar->save()){
+			return Response::json("Resource could not be saved", 400);
+		}
+
+		return Response::json("Resource Updated", 200);
 	}
-
-
 }
