@@ -72,6 +72,8 @@ class CalendarController extends \BaseController {
 			return Response::json("Not Found", 404);
 		} 
 
+		$calendar->delete();
+
 		return Response::json("Resource Destroyed", 204);
 	}
 
