@@ -3,23 +3,20 @@ namespace Mogilevsky\Observers;
 
 use \Mogilevsky\ObserverInterface;
 use \Mogilevsky\Observers\BaseObserver;
-use \Mogilevsky\Loggers\FileLogger;
+use \Mogilevsky\Logger\FileLogger;
 
 class CalendarObserver extends BaseObserver implements ObserverInterface{
 
     public function created($model){
-      
-      FileLogger::instance()->info('hello!');
-
-      var_dump("created");
+      FileLogger::instance()->created($model);
     }
 
     public function updated($model){
-      var_dump("updated");
+      FileLogger::instance()->updated($model);
     }
 
     public function deleted($model){
-      var_dump("deleted");
+      FileLogger::instance()->deleted($model);
     }
 
 }
