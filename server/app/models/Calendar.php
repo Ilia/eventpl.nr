@@ -1,5 +1,4 @@
 <?php
-
 use Watson\Validating\ValidatingTrait;
 
 class Calendar extends Eloquent {
@@ -15,4 +14,15 @@ class Calendar extends Eloquent {
   ];
 
   protected $fillable = array('name');
+
+  public function appointements()
+  {
+    return $this->hasMany('Appointement');
+  }
+
+  public static function boot()
+  {
+    parent::boot();
+    Calendar::observe(new Mogilevsky\Observers\CalendarObserver);
+  }
 }
