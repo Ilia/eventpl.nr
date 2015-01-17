@@ -1,8 +1,8 @@
 <?php 
 
-define('LOGFILE', 'logfile.log');
-
 namespace Mogilevsky\Loggers;
+
+define('LOGFILE', storage_path().'/logs/logfile.log');
 
 class FileLogger extends \Psr\Log\AbstractLogger
 {
@@ -12,20 +12,20 @@ class FileLogger extends \Psr\Log\AbstractLogger
 
   public function __construct($file)
   {
-      if (!file_exists($file) ||
+      if (!file_exists($file) &&
           !touch($file)) 
-        throw new \InvalidArgumentException('Log file ' . $logfile . ' cannot be created');
+        throw new \InvalidArgumentException('Log file ' . $file . ' cannot be created');
       
       if (!is_writable($file)) 
-        throw new \InvalidArgumentException('Log file ' . $logfile . ' is not writeable');
+        throw new \InvalidArgumentException('Log file ' . $file . ' is not writeable');
       
       $this->_file = $file;
   }
 
   public function log($level, $message, array $context = array())
   {
-      $line = '[' . date('Y-m-d H:i:s') . '] ' . strtoupper($level) . ': ' . $this->interpolate($message, $context) . "\n";
-      file_put_contents($this->logfile, $logline, FILE_APPEND);
+      $line = '[' . date('Y-m-d H:i:s') . '] ' . strtoupper($level) . ': ' . $message . "\n";
+      file_put_contents($this->_file, $line, FILE_APPEND);
   }
 
   public static function instance() { 

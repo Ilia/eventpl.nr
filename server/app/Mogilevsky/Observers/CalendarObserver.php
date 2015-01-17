@@ -9,7 +9,7 @@ class CalendarObserver extends BaseObserver implements ObserverInterface{
 
     public function created($model){
       
-      FileLogger::instance()->log('hello!');
+      FileLogger::instance()->info('hello!');
 
       var_dump("created");
     }
