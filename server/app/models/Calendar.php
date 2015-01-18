@@ -16,7 +16,7 @@ class Calendar extends Model {
 
   public function appointements()
   {
-    return $this->hasMany('Appointement');
+    return $this->hasMany('Appointment');
   }
 
   public static function boot()
