@@ -1,6 +1,17 @@
 <?php
 
-class Appointment extends Eloquent {
+use Mogilevsky\Storage\Model;
+
+class Appointment extends Model {
+
+  protected static $_rules = [
+    'title' => 'required',
+    'start_datetime' => 'required',
+    'end_datetime' => 'required'
+  ];
+
+  protected $fillable = array('title', 'notes', 'location', 'start_datetime', 
+                              'end_datetime');
 
   public static function boot()
   {
