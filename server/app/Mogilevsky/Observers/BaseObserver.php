@@ -1,5 +1,6 @@
 <?php 
 namespace Mogilevsky\Observers;
+use \Mogilevsky\Logger\FileLogger;
 
 class BaseObserver implements \Mogilevsky\ObserverInterface{
 
@@ -8,15 +9,15 @@ class BaseObserver implements \Mogilevsky\ObserverInterface{
     }
 
     public function created($model){
-      var_dump("created");
+      FileLogger::instance()->created($model);
     }
 
     public function updated($model){
-      var_dump("updated");
+      FileLogger::instance()->updated($model);
     }
 
     public function deleted($model){
-      var_dump("deleted");
+      FileLogger::instance()->deleted($model);
     }
 
 }
