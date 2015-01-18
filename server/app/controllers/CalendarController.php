@@ -11,7 +11,7 @@ class CalendarController extends \BaseController {
 	 */
 	public function index()
 	{
-		return Response::json(Calendar::get(), 200);
+		return Response::json(Calendar::get());
 	}
 
 	/**
@@ -23,11 +23,12 @@ class CalendarController extends \BaseController {
 	public function show($id)
 	{
 		$calendar = Calendar::find($id);
-		if (is_null($calendar)) {
-			return Response::json("Not Found", 404);
-		} 
 
-		return Response::json($calendar->toArray(), 200);
+		if (!$calendar){
+			App::abort(404);
+		}
+	
+		return Response::json($calendar->toArray());
 	}
 
 
@@ -40,12 +41,11 @@ class CalendarController extends \BaseController {
 	{
 		$calendar = new Calendar(Input::all());
 
-    if (!$calendar->save())
-    {
-			return Response::json($calendar->getErrors()->toArray(), 400);
+    if (!$calendar->save()) {
+			App::abort(400);
  		}
 
- 		return Response::json("Resource Created", 201);
+ 		return Response::json($calendar->toArray(), 201);
 	}
 
 
@@ -58,13 +58,16 @@ class CalendarController extends \BaseController {
 	public function destroy($id)
 	{
 		$calendar = Calendar::find($id);
-		if (is_null($calendar)) {
-			return Response::json("Not Found", 404);
+		
+		if (!$calendar) {
+			App::abort(404);
 		} 
+		
+		if (!$calendar->delete()) {
+			App::abort(400);
+ 		}
 
-		$calendar->delete();
-
-		return Response::json("Resource Destroyed", 204);
+		return Response::make(null, 204);
 	}
 
 
@@ -77,15 +80,17 @@ class CalendarController extends \BaseController {
 	public function update($id)
 	{
 		$calendar = Calendar::find($id);
-		if(is_null($calendar)) {
-		   return Response::json("Not Found", 404);
-		}
-		$calendar->name = Input::get('name');
+		if(!$calendar) {
+		   App::abort(404);
+ 		}
+		
+		$calendar->fill(Input::get());
 
 		if (!$calendar->save()){
-			return Response::json($calendar->getErrors()->toArray(), 400);
+			App::abort(400, $calendar->getErrors()->toArray());
+			//return Response::json($calendar->getErrors()->toArray(), 400);
 		}
 
-		return Response::json("Resource Updated", 200);
+		return Response::json($calendar->toArray());
 	}
 }
