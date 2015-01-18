@@ -16,10 +16,7 @@ App::error(function(Symfony\Component\HttpKernel\Exception\HttpException $e, $co
 
   switch ($code)
   {
-    case 400:
-      $message = 'Bad Request';
-      break;
-    case 404:
+     case 404:
       $message = 'The requested resource was not found';
       break;
 
