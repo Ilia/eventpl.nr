@@ -29,3 +29,9 @@ App::error(function(Symfony\Component\HttpKernel\Exception\HttpException $e, $co
 
   return Response::json($e->getMessage() ?: $message, $code, $headers);
 });
+
+// Redefine ModelNotFoundException Exception
+App::error(function(Illuminate\Database\Eloquent\ModelNotFoundException $e)
+{
+  return Response::json($e->getMessage(), 404);
+});
