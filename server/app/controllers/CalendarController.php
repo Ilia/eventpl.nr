@@ -22,13 +22,7 @@ class CalendarController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$calendar = Calendar::find($id);
-
-		if (!$calendar){
-			App::abort(404);
-		}
-	
-		return Response::json($calendar->toArray());
+		return Response::json(Calendar::findOrFail($id)->toArray());
 	}
 
 
@@ -57,16 +51,7 @@ class CalendarController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$calendar = Calendar::find($id);
-		
-		if (!$calendar) {
-			App::abort(404);
-		} 
-		
-		if (!$calendar->delete()) {
-			App::abort(400);
- 		}
-
+		Calendar::findOrFail($id)->delete();
 		return Response::make(null, 204);
 	}
 
@@ -79,16 +64,11 @@ class CalendarController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$calendar = Calendar::find($id);
-		if(!$calendar) {
-		   App::abort(404);
- 		}
-		
+		$calendar = Calendar::findOrFail($id);
 		$calendar->fill(Input::get());
 
 		if (!$calendar->save()){
 			App::abort(400, $calendar->getErrors()->toArray());
-			//return Response::json($calendar->getErrors()->toArray(), 400);
 		}
 
 		return Response::json($calendar->toArray());
