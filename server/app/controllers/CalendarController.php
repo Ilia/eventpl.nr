@@ -36,7 +36,8 @@ class CalendarController extends \BaseController {
 		$calendar = new Calendar(Input::all());
 
     if (!$calendar->save()) {
-			App::abort(400);
+    	// TODO: convert this to better error handler
+			return Response::json($calendar->getErrors()->toArray(), 400);
  		}
 
  		return Response::json($calendar->toArray(), 201);
@@ -68,7 +69,8 @@ class CalendarController extends \BaseController {
 		$calendar->fill(Input::get());
 
 		if (!$calendar->save()){
-			App::abort(400, $calendar->getErrors()->toArray());
+			// TODO: convert this to better error handler
+			return Response::json($calendar->getErrors()->toArray(), 400);
 		}
 
 		return Response::json($calendar->toArray());

@@ -7,9 +7,9 @@ class AppointmentController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($calendar_id)
 	{
-		//
+		return Response::json(Calendar::findOrFail($calendar_id)->appointements->toArray());
 	}
 
 
@@ -18,9 +18,16 @@ class AppointmentController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($calendar_id)
 	{
-		//
+		$appointment = new Appointment(Input::get());
+		$appointment->calendar_id = $calendar_id;
+		if (!$appointment->save())
+		{
+			// TODO: convert this to better error handler
+			return Response::json($appointment->getErrors()->toArray(), 400);
+		}
+		return Response::json($appointment->toArray(), 201);
 	}
 
 
@@ -30,11 +37,22 @@ class AppointmentController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($calendar_id, $id)
 	{
-		//
+		Appointment::findOrFail($id)->delete();
+		return Response::make(null, 204);
 	}
 
+/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($calendar_id, $id)
+	{
+		return Response::json(Appointment::findOrFail($id)->toArray());
+	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -42,9 +60,19 @@ class AppointmentController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($calendar_id, $id)
 	{
-		//
+		$appointment = Calendar::findOrFail($calendar_id)->appointements()->findOrFail($id);
+		// if (!$task)
+		// {
+		// 	App::abort(404);
+		// }
+		$appointment->fill(Input::get());
+		if (!$appointment->save())
+		{
+			return Response::json($appointment->getErrors()->toArray(), 400);
+		}
+		return Response::json($appointment->toArray());
 	}
 
 
