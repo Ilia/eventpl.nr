@@ -16,13 +16,12 @@ class CreateAppointmentsTable extends Migration {
     {
         $table->increments('id');
         $table->integer('calendar_id');
+        $table->foreign('calendar_id')->references('id')->on('calendars');
         $table->string('title');
-        $table->string('location');
-        $table->date('start_date');
-        $table->time('start_time');
-        $table->date('end_date');
-        $table->time('end_time');
-        $table->string('notes');
+        $table->datetime('start_datetime');
+        $table->datetime('end_datetime');
+        $table->string('location')->nullable();
+        $table->string('notes')->nullable();
         $table->timestamps();
     });
 	}
