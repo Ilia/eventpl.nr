@@ -22,7 +22,7 @@ class Validator extends \Illuminate\Validation\Validator {
    * @param  $parameters 
    * @return boolean
    */
-  public function validateAfter($attribute, $value, $parameters)
+  public function validateAfterDateTime($attribute, $value, $parameters)
   {
     $start_datetime = $this->getValue($parameters[0]); 
     return (strtotime($value) > strtotime($start_datetime));
